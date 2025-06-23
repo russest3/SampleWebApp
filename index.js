@@ -1,25 +1,14 @@
-import http from "http";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+const { createServer } = require('node:http');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const hostname = '127.0.0.1';
+const port = 3000;
 
-const server = http.createServer((req, res) => {
-    const filePath = path.join(__dirname, "message.txt");
-
-    fs.readFile(filePath, "utf8", (err, data) => {
-        if (err) {
-            res.writeHead(500, { "Content-Type": "text/plain" });
-            res.end("Error reading file");
-        } else {
-            res.writeHead(200, { "Content-Type": "text/plain" });
-            res.end(data);
-        }
-    });
+const server = createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello World');
 });
 
-server.listen(3000, () => {
-    console.log("Server is running on port 3000");
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
 });
